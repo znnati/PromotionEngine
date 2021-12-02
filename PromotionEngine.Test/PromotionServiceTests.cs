@@ -72,12 +72,12 @@ namespace PromotionEngine.Test
         public void CombinationPromotionTest(IList<(char Sku, int Quantity)> data, double total)
         {
             // Arrange
-            IEnumerable<BasketItem> items = data.Select(i => new BasketItem
+            IList<BasketItem> items = data.Select(i => new BasketItem
             {
                 Sku = i.Sku,
                 Quantity = i.Quantity,
                 Price = DbProductsList.FirstOrDefault(u => u.Sku.Equals(i.Sku)).Price
-            });
+            }).ToList();
 
             var quantityPromotion = new CombinationPromotion("C & D for 30", skuQuntities: new[] { ('C', 1), ('D', 1) }, price: 30);
 
@@ -106,12 +106,12 @@ namespace PromotionEngine.Test
         public void ScenarioTest(IList<(char Sku, int Quantity)> data, double total)
         {
             // Arrange
-            IEnumerable<BasketItem> items = data.Select(i => new BasketItem
+            IList<BasketItem> items = data.Select(i => new BasketItem
             {
                 Sku = i.Sku,
                 Quantity = i.Quantity,
                 Price = DbProductsList.FirstOrDefault(u => u.Sku.Equals(i.Sku)).Price
-            });
+            }).ToList();
 
             IPromotionService promotionService = new PromotionService();
 
@@ -131,7 +131,6 @@ namespace PromotionEngine.Test
         {
             yield return new object[] { new List<(char Sku, int price)>() { ('A', 1), ('B', 1), ('C', 1) }, 100.0 };
         }
-
         private static IEnumerable<object[]> GetScenario_B_Data()
         {
             yield return new object[] { new List<(char Sku, int price)>() { ('A', 5), ('B', 5), ('C', 1) }, 370.0 };

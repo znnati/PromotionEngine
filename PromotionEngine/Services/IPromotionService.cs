@@ -21,7 +21,7 @@ namespace PromotionEngine.Services
         /// <param name="items"></param>
         /// <param name="quantityPromotion"></param>
         /// <returns>a list of new items <see cref="BasketPromotionItem"/> where promotion applied</returns>
-        IList<BasketPromotionItem>? TryApplyCombinationPromotion(IEnumerable<BasketItem> items, CombinationPromotion quantityPromotion);
+        IList<BasketPromotionItem>? TryApplyCombinationPromotion(IList<BasketItem> items, CombinationPromotion quantityPromotion);
 
         /// <summary>
         /// Try applying given promotion list <see cref="Promotion"/> on given items <see cref="BasketItem"/> where they applies.
@@ -29,6 +29,6 @@ namespace PromotionEngine.Services
         /// <param name="items"></param>
         /// <param name="activePromotions"></param>
         /// <returns>a list of new items <see cref="BasketPromotionItem"/> where promotion applied</returns>
-        IList<BasketPromotionItem> TyrApplyPromotionsOnItems(IEnumerable<BasketItem> items, IList<Promotion> activePromotions);
+        IList<BasketPromotionItem> TyrApplyPromotionsOnItems(IList<BasketItem> items, IList<Promotion> activePromotions);
     }
 }

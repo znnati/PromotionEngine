@@ -13,5 +13,10 @@ namespace PromotionEngine.Services
         {
             throw new NotImplementedException();
         }
+
+        public IList<BasketPromotionItem> TyrApplyPromotionsOnItems(IEnumerable<BasketItem> items, IList<Promotion> activePromotions)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

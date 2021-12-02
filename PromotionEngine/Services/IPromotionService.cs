@@ -14,5 +14,13 @@ namespace PromotionEngine.Services
         /// <param name="quantityPromotion"></param>
         /// <returns>a new <see cref="BasketPromotionItem"/> if promotion applies</returns>
         BasketPromotionItem? TryApplyQuantityPromotionOnItem(BasketItem item, QuantityPromotion quantityPromotion);
+
+        /// <summary>
+        /// Try applying given combination promotion <see cref="QuantityPromotion"/> on given list of items <see cref="BasketItem"/>
+        /// </summary>
+        /// <param name="items"></param>
+        /// <param name="quantityPromotion"></param>
+        /// <returns>a list of new items <see cref="BasketPromotionItem"/> where promotion applies</returns>
+        IList<BasketPromotionItem>? TryApplyCombinationPromotion(IEnumerable<BasketItem> items, CombinationPromotion quantityPromotion);
     }
 }

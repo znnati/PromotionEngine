@@ -1,6 +1,8 @@
 using NUnit.Framework;
 using PromotionEngine.Models;
+using PromotionEngine.Services;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PromotionEngine.Test
 {
@@ -32,6 +34,26 @@ namespace PromotionEngine.Test
         [TestCase('A', 5, 230)]
         public void QuantityPromotionTest(char sku, int quantity, decimal total)
         {
+            // Arrange
+            (char Sku, double price) = DbProductsList.FirstOrDefault(p => p.Sku.Equals(sku));
+
+            var item = new BasketItem
+            {
+                Sku = sku,
+                Quantity = quantity,
+                Price = price
+            };
+
+            var quantityPromotion = new QuantityPromotion("3 of A's for 130", 'A', 3, 130);
+
+            IPromotionService promotionService = new PromotionService();
+
+
+            // Act 
+            BasketPromotionItem? result = promotionService.TryApplyQuantityPromotionOnItem(item, quantityPromotion);
+
+
+            // Assert
             Assert.Fail();
         }
 

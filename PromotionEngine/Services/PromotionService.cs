@@ -48,7 +48,28 @@ namespace PromotionEngine.Services
 
         public IList<BasketPromotionItem> TyrApplyPromotionsOnItems(IList<BasketItem> items, IList<Promotion> activePromotions)
         {
-            throw new NotImplementedException();
+            var promotedItems = new List<BasketPromotionItem>();
+           
+            // Apply quantity promotions first.
+            foreach (QuantityPromotion promotion in activePromotions.Where(p => p is QuantityPromotion))
+            {
+                foreach (var item in items)
+                {
+                    BasketPromotionItem? result = TryApplyQuantityPromotionOnItem(item, promotion);
+                    if (result != null)
+                        promotedItems.Add(result);
+                }
+            }
+
+            // Apply combination promtions second.
+            foreach (CombinationPromotion promotion in activePromotions.Where(p => p is CombinationPromotion))
+            {
+                IList<BasketPromotionItem>? result = TryApplyCombinationPromotion(items, promotion);
+                if (result?.Any() == true)
+                    promotedItems.AddRange(result);
+            }
+
+            return promotedItems;
         }
 
 

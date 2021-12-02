@@ -105,7 +105,25 @@ namespace PromotionEngine.Test
         [TestCaseSource(nameof(GetScenario_C_Data))]
         public void ScenarioTest(IList<(char Sku, int Quantity)> data, double total)
         {
-            Assert.Fail();
+            // Arrange
+            IEnumerable<BasketItem> items = data.Select(i => new BasketItem
+            {
+                Sku = i.Sku,
+                Quantity = i.Quantity,
+                Price = DbProductsList.FirstOrDefault(u => u.Sku.Equals(i.Sku)).Price
+            });
+
+            IPromotionService promotionService = new PromotionService();
+
+            IList<BasketPromotionItem> basketPromotionItems = promotionService.TyrApplyPromotionsOnItems(items, ActivePromotions);
+
+
+            // Assert
+
+            var promotionPrice = basketPromotionItems.Sum(p => p.Total);
+            var noPromotionPrice = items.Sum(p => p.Price * p.Quantity);
+
+            Assert.AreEqual(total, promotionPrice + noPromotionPrice);
         }
 
 

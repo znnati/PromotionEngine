@@ -58,7 +58,7 @@ namespace PromotionEngine.Test
             Assert.AreEqual(quantity - (result?.Quantity ?? 0), item.Quantity);
 
             // That promotion total is equal to promotion price times the possible promotion nbr. 
-            Assert.AreEqual(result?.Total ?? 0, quantityPromotion.Price * (quantity / quantityPromotion.Nbr));
+            Assert.AreEqual(quantityPromotion.Price * (quantity / quantityPromotion.Nbr), (result?.Total ?? 0));
 
             // That the total is total is equal to promotion price + original price for items left
             Assert.AreEqual(total, (result?.Total ?? 0) + (item.Quantity * item.Price));

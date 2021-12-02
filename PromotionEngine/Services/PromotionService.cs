@@ -33,7 +33,7 @@ namespace PromotionEngine.Services
 
         private bool HasQuantityPromotion(BasketItem item, QuantityPromotion promotion)
         {
-            return false;
+            return item.Sku.Equals(promotion.Sku) && item.Quantity >= promotion.Nbr;
         }
     }
 }

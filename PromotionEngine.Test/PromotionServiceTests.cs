@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using PromotionEngine.Models;
 using System.Collections.Generic;
 
 namespace PromotionEngine.Test

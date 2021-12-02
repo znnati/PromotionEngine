@@ -69,19 +69,45 @@ namespace PromotionEngine.Test
         [TestCaseSource(nameof(GetCombinationPromotion_Case_2))]
         [TestCaseSource(nameof(GetCombinationPromotion_Case_3))]
         [TestCaseSource(nameof(GetCombinationPromotion_Case_4))]
-        public void CombinationPromotionTest(IList<(char Sku, int price)> data, double total)
+        public void CombinationPromotionTest(IList<(char Sku, int Quantity)> data, double total)
         {
-            Assert.Fail();
+            // Arrange
+            IEnumerable<BasketItem> items = data.Select(i => new BasketItem
+            {
+                Sku = i.Sku,
+                Quantity = i.Quantity,
+                Price = DbProductsList.FirstOrDefault(u => u.Sku.Equals(i.Sku)).Price
+            });
+
+            var quantityPromotion = new CombinationPromotion("C & D for 30", skuQuntities: new[] { ('C', 1), ('D', 1) }, price: 30);
+
+            IPromotionService promotionService = new PromotionService();
+
+            // Act
+
+            IList<BasketPromotionItem>? result = promotionService.TryApplyCombinationPromotion(items, quantityPromotion);
+
+            // Assert
+
+            // That promotion total is equal to promotion price times the possible promotion nbr.             
+            var promotionPrice = result?.Sum(r => r.Total) ?? 0;
+            int promotionQunatity = result?.FirstOrDefault()?.Quantity ?? 0;
+
+            Assert.AreEqual(quantityPromotion.Price * promotionQunatity, promotionPrice);
+
+            var noPromoPrice = items.Sum(i => i.Quantity * i.Price);
+            Assert.AreEqual(total, promotionPrice + noPromoPrice);
         }
 
         [Test]
         [TestCaseSource(nameof(GetScenario_A_Data))]
         [TestCaseSource(nameof(GetScenario_B_Data))]
         [TestCaseSource(nameof(GetScenario_C_Data))]
-        public void ScenarioTest(IList<(char Sku, int price)> data, double total)
+        public void ScenarioTest(IList<(char Sku, int Quantity)> data, double total)
         {
             Assert.Fail();
         }
+
 
         private static IEnumerable<object[]> GetScenario_A_Data()
         {

@@ -52,9 +52,16 @@ namespace PromotionEngine.Test
             // Act 
             BasketPromotionItem? result = promotionService.TryApplyQuantityPromotionOnItem(item, quantityPromotion);
 
-
             // Assert
-            Assert.Fail();
+
+            // That quantity used in promotion + qunatity left are equal to the ordered quantity
+            Assert.AreEqual(quantity - (result?.Quantity ?? 0), item.Quantity);
+
+            // That promotion total is equal to promotion price times the possible promotion nbr. 
+            Assert.AreEqual(result?.Total ?? 0, quantityPromotion.Price * (quantity / quantityPromotion.Nbr));
+
+            // That the total is total is equal to promotion price + original price for items left
+            Assert.AreEqual(total, (result?.Total ?? 0) + (item.Quantity * item.Price));
         }
 
         [Test]

@@ -159,6 +159,38 @@ namespace PromotionEngine.Test
         }
 
 
+
+        [Test]
+        [TestCaseSource(nameof(GetNewPromotionTest_Data))]
+        public void NewPrmotionTest(IList<(char Sku, int Quantity)> data, double total)
+        {
+            // Arrange
+            IList<BasketItem> items = data.Select(i => new BasketItem
+            {
+                Sku = i.Sku,
+                Quantity = i.Quantity,
+                Price = DbProductsList.FirstOrDefault(u => u.Sku.Equals(i.Sku)).Price
+            }).ToList();
+
+            IPromotionService promotionService = new PromotionService();
+
+            ActivePromotions.Add(new PercentagePromotion("10 % A", 'A', 10));
+            ActivePromotions.Add(new PercentagePromotion("50 % B", 'B', 50));
+
+            IList<BasketPromotionItem> basketPromotionItems = promotionService.TyrApplyPromotionsOnItems(items, ActivePromotions);
+
+
+            // Assert
+
+            var promotionPrice = basketPromotionItems.Sum(p => p.Total);
+            var noPromotionPrice = items.Sum(p => p.Price * p.Quantity);
+
+            Assert.AreEqual(total, promotionPrice + noPromotionPrice);
+        }
+
+
+
+        // Test cases sources
         private static IEnumerable<object[]> GetScenario_A_Data()
         {
             yield return new object[] { new List<(char Sku, int price)>() { ('A', 1), ('B', 1), ('C', 1) }, 100.0 };
@@ -188,6 +220,13 @@ namespace PromotionEngine.Test
         private static IEnumerable<object[]> GetCombinationPromotion_Case_4()
         {
             yield return new object[] { new List<(char Sku, int price)>() { ('A', 2), ('B', 2), ('C', 2), ('D', 4) }, 250.0 };
+        }
+
+
+
+        private static IEnumerable<object[]> GetNewPromotionTest_Data()
+        {
+            yield return new object[] { new List<(char Sku, int price)>() { ('A', 5), ('B', 5), ('C', 1) }, 335.0 };
         }
     }
 }

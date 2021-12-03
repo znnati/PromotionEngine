@@ -105,7 +105,7 @@ namespace PromotionEngine.Test
         [Test]
         [TestCase('A', 1, 45)]
         [TestCase('A', 5, 225)]
-        [TestCase('B', 2, 80)]
+        [TestCase('B', 2, 60)]
         public void PercentagePromotionTest(char sku, int quantity, decimal total)
         {
             // Arrange

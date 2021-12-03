@@ -48,7 +48,13 @@ namespace PromotionEngine.Services
 
         public BasketPromotionItem? TryApplyPercentagePromotionOnItem(BasketItem item, PercentagePromotion percentagePromotion)
         {
-            throw new NotImplementedException();
+            if (!HasPercentagePromotion(item, percentagePromotion))
+                return null;
+
+            int itemQuantity = item.Quantity;
+            item.Quantity = 0;
+
+            return new BasketPromotionItem { Sku = item.Sku, Quantity = itemQuantity, Total = itemQuantity * item.Price * percentagePromotion.Percentage / 100 };
         }
 
         public IList<BasketPromotionItem> TyrApplyPromotionsOnItems(IList<BasketItem> items, IList<Promotion> activePromotions)
@@ -86,6 +92,10 @@ namespace PromotionEngine.Services
         {
             return promotion.SkuQuantityList.All(p =>
             items.Any(item => item.Sku.Equals(p.sku) && p.nbr <= item.Quantity));
+        }
+        private bool HasPercentagePromotion(BasketItem item, PercentagePromotion percentagePromotion)
+        {
+            return percentagePromotion?.Sku.Equals(item.Sku) ?? false;
         }
     }
 }

@@ -101,6 +101,36 @@ namespace PromotionEngine.Test
             Assert.AreEqual(total, promotionPrice + noPromoPrice);
         }
 
+
+        [Test]
+        [TestCase('A', 1, 45)]
+        [TestCase('A', 5, 225)]
+        [TestCase('B', 2, 80)]
+        public void PercentagePromotionTest(char sku, int quantity, decimal total)
+        {
+            // Arrange
+            (char Sku, double price) = DbProductsList.FirstOrDefault(p => p.Sku.Equals(sku));
+
+            var item = new BasketItem
+            {
+                Sku = sku,
+                Quantity = quantity,
+                Price = price
+            };
+
+            var percentagePromotion = new PercentagePromotion("10% A", 'A', 10);
+
+            IPromotionService promotionService = new PromotionService();
+
+            // Act 
+            BasketPromotionItem? result = promotionService.TryApplyPercentagePromotionOnItem(item, percentagePromotion);
+
+            // Assert
+
+            // That the total is total is equal to promotion price + original price for items left
+            Assert.AreEqual(total, (result?.Total ?? 0) + (item.Quantity * item.Price));
+        }
+
         [Test]
         [TestCaseSource(nameof(GetScenario_A_Data))]
         [TestCaseSource(nameof(GetScenario_B_Data))]

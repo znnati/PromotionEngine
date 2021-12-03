@@ -30,5 +30,6 @@ namespace PromotionEngine.Services
         /// <param name="activePromotions"></param>
         /// <returns>a list of new items <see cref="BasketPromotionItem"/> where promotion applied</returns>
         IList<BasketPromotionItem> TyrApplyPromotionsOnItems(IList<BasketItem> items, IList<Promotion> activePromotions);
+        BasketPromotionItem? TryApplyPercentagePromotionOnItem(BasketItem item, PercentagePromotion percentagePromotion);
     }
 }

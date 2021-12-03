@@ -46,6 +46,11 @@ namespace PromotionEngine.Services
             return new BasketPromotionItem { Sku = item.Sku, Quantity = (promotedItem?.Quantity ?? 0) + quantityPromotion.Nbr, Total = (promotedItem?.Total ?? 0) + quantityPromotion.Price };
         }
 
+        public BasketPromotionItem? TryApplyPercentagePromotionOnItem(BasketItem item, PercentagePromotion percentagePromotion)
+        {
+            throw new NotImplementedException();
+        }
+
         public IList<BasketPromotionItem> TyrApplyPromotionsOnItems(IList<BasketItem> items, IList<Promotion> activePromotions)
         {
             var promotedItems = new List<BasketPromotionItem>();

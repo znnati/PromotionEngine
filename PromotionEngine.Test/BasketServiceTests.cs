@@ -2,11 +2,7 @@
 using NUnit.Framework;
 using PromotionEngine.Models;
 using PromotionEngine.Services;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PromotionEngine.Test
 {
@@ -20,15 +16,14 @@ namespace PromotionEngine.Test
         {
             mockDbRepository = new Mock<IDbRepository>();
             mockDbRepository.Setup(x => x.GetProducts()).Returns(new List<(char Sku, double Price)> { ('A', 50), ('B', 30), ('C', 20), ('D', 15) });
-
-            mockPromotionService = new Mock<PromotionService>().As<IPromotionService>();
-            mockPromotionService.Setup(x => x.GetActivePromotions()).Returns(new List<Promotion>()
+            mockDbRepository.Setup(x => x.GetActivePromotions()).Returns(new List<Promotion>()
             {
                 new QuantityPromotion(name: "3 of A's for 130", sku: 'A', nbr: 3, price: 130),
                 new QuantityPromotion("2 of B's for 45", 'B', 2, 45),
                 new CombinationPromotion("C & D for 30", skuQuntities: new [] {('C', 1), ('D', 1)}, price: 30)
             });
-            mockPromotionService.CallBase = true;
+
+            mockPromotionService = new Mock<PromotionService>() { CallBase = true }.As<IPromotionService>();
         }
 
         [TearDown]
@@ -44,11 +39,11 @@ namespace PromotionEngine.Test
         public void Scenario_A_Test(IList<(char Sku, int price)> data, double total)
         {
             // Arrange
-            var basketService = new BasketService(mockPromotionService.Object, mockDbRepository.Object);
+            var basketService = new BasketService(mockDbRepository.Object, mockPromotionService.Object);
             basketService.AddProductsToBasket(data);
 
             // Act 
-            basketService.ApplyPromotion(mockPromotionService.Object.GetActivePromotions());
+            basketService.ApplyPromotion();
 
             // Assert
             Assert.AreEqual(total, basketService.GetBasketTotal());

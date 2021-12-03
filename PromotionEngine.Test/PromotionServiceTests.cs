@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace PromotionEngine.Test
 {
-    public class Tests
+    public class PromotionServiceTests
     {
         IList<Promotion> ActivePromotions { get; set; } = new List<Promotion>();
 

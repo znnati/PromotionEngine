@@ -6,6 +6,8 @@ using System.Linq;
 
 namespace PromotionEngine.Test
 {
+    // Only happy fllow tests are included.
+    [TestFixture]
     public class PromotionServiceTests
     {
         IList<Promotion> ActivePromotions { get; set; } = new List<Promotion>();

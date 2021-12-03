@@ -6,6 +6,9 @@ using System.Collections.Generic;
 
 namespace PromotionEngine.Test
 {
+
+    // Only happy fllow tests are included.
+    [TestFixture]
     internal class BasketServiceTests
     {
         private Mock<IDbRepository> mockDbRepository { get; set; } = new Mock<IDbRepository>();

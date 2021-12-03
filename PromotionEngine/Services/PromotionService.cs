@@ -54,7 +54,7 @@ namespace PromotionEngine.Services
             int itemQuantity = item.Quantity;
             item.Quantity = 0;
 
-            return new BasketPromotionItem { Sku = item.Sku, Quantity = itemQuantity, Total = itemQuantity * item.Price * percentagePromotion.Percentage / 100 };
+            return new BasketPromotionItem { Sku = item.Sku, Quantity = itemQuantity, Total = itemQuantity * item.Price * (100 - percentagePromotion.Percentage) / 100 };
         }
 
         public IList<BasketPromotionItem> TyrApplyPromotionsOnItems(IList<BasketItem> items, IList<Promotion> activePromotions)

@@ -226,7 +226,7 @@ namespace PromotionEngine.Test
 
         private static IEnumerable<object[]> GetNewPromotionTest_Data()
         {
-            yield return new object[] { new List<(char Sku, int price)>() { ('A', 5), ('B', 5), ('C', 1) }, 335.0 };
+            yield return new object[] { new List<(char Sku, int price)>() { ('A', 5), ('B', 5), ('C', 1) }, 345.0 };
         }
     }
 }

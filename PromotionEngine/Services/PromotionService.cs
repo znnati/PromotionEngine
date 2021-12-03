@@ -80,6 +80,17 @@ namespace PromotionEngine.Services
                     promotedItems.AddRange(result);
             }
 
+            // Apply percentage promotions third.
+            foreach (PercentagePromotion promotion in activePromotions.Where(p => p is PercentagePromotion))
+            {
+                foreach (var item in items)
+                {
+                    var result = TryApplyPercentagePromotionOnItem(item, promotion);
+                    if(result != null)
+                        promotedItems.Add(result);
+                }
+            }
+
             return promotedItems;
         }
 
